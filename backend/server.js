@@ -12,7 +12,6 @@ app.get('/:domain/:id',(req,res)=>{
   const  {domain,id}  = req.params;
   const database = functions.ReadDb();
   const originalUrl = database[domain+"/"+id];
-  console.log(originalUrl)
   if(originalUrl){
     res.redirect(originalUrl)
   }else{
@@ -23,7 +22,13 @@ app.get('/:domain/:id',(req,res)=>{
 app.post('/shortUrl/shorten',(req,res)=>{
   const {originalUrl} = req.body
   const database = functions.ReadDb();
-  const shortUrl = functions.GenerateShortUrl(JSON.stringify(originalUrl))
+  const URLexists = Object.entries(database).find(([short,url]) => url === originalUrl)
+  if(URLexists){
+    const [existingShortUrl] = URLexists
+    return res.json({shortUrl: `http://localhost:3000/${existingShortUrl}`})
+  }
+  
+  const shortUrl = functions.GenerateShortUrl(originalUrl)
   database[shortUrl] = originalUrl
   functions.insertData(database)
 

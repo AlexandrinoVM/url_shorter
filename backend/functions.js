@@ -13,7 +13,6 @@ function insertData(data){
 function GenerateShortUrl(data) {
     let urlDomain =""
     let count =0
-    console.log(data)
     for(let i =0;i<data.length;i++){
         if(data[i] === '.'){
             count ++
@@ -29,7 +28,6 @@ function GenerateShortUrl(data) {
         }
     }
      let domain = urlDomain + "/"+crypto.randomBytes(3).toString('hex');
-    console.log(domain)
     return domain;
 }
 
